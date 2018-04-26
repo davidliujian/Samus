@@ -1,7 +1,6 @@
 package com.sdu.samus.dao;
 
 import com.sdu.samus.mapper.UserRelationshipMapper;
-import com.sdu.samus.model.UserRelationship;
 import com.sdu.samus.model.UserRelationshipWithBLOBs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -18,5 +17,9 @@ public class UserRelationshipDao {
 
 	public int registerRelationship(UserRelationshipWithBLOBs userRelationship) throws DataAccessException{
 		return userRelationshipMapper.insertSelective(userRelationship);
+	}
+
+	public int setActive(UserRelationshipWithBLOBs userRelationshipWithBLOBs){
+		return userRelationshipMapper.updateByPrimaryKeySelective(userRelationshipWithBLOBs);
 	}
 }

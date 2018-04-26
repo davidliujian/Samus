@@ -2,6 +2,7 @@ package com.sdu.samus.mapper;
 
 import com.sdu.samus.model.UserRelationship;
 import com.sdu.samus.model.UserRelationshipWithBLOBs;
+import org.springframework.context.annotation.Bean;
 
 public interface UserRelationshipMapper {
     /**
