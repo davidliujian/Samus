@@ -3,12 +3,16 @@ package com.sdu.samus.util;
 
 import com.sdu.samus.AppContext;
 import com.sdu.samus.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 
 public class SessionUtil {
 
-	private static Object getSessionInThread() {
+	private static final Logger logger = LoggerFactory.getLogger(SessionUtil.class);
+
+	public static Object getSessionInThread() {
 		Object session = AppContext.getContext().getObject(Constants.APP_CONTEXT_SESSION);
 		return session;
 	}
@@ -37,15 +41,17 @@ public class SessionUtil {
 	public static Object getSession(String key) {
 		Object session = getSessionInThread();
 		if (session == null) {
+			logger.info("session 为空");
 			return null;
 		}
+		logger.info("session 不为空");
 		try {
-			Class<?>[] param = new Class[2];
+			Class<?>[] param = new Class[1];
 			param[0] = String.class;
 
 			Method method = session.getClass().getMethod("getAttribute", param);
 
-			Object[] objects = new Object[2];
+			Object[] objects = new Object[1];
 			objects[0] = key;
 
 			Object returnValue = method.invoke(session, objects);

@@ -30,4 +30,18 @@ public class SchoolService {
 		}
 		return schoolDao.findSchoolByName(user.getSchoolName());
 	}
+
+	public School getSchoolById5(String schoolid5)throws ParameterException {
+		//判断参数是否异常
+		ParameterException pe  =new ParameterException();
+		if(StringUtil.isEmpty(schoolid5)){
+			logger.info("SchoolService --- [user.getSchoolid5]     :"+schoolid5);
+			pe.addError(ResultCode.SCHOOL_EMPTY);
+		}
+		if(pe.hasErrors()){
+			logger.info("SchoolService --- [ParameterException.hasErrors]     :"+pe.hasErrors());
+			throw pe;
+		}
+		return schoolDao.findSchoolById5(schoolid5);
+	}
 }

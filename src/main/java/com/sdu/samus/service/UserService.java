@@ -5,6 +5,7 @@ import com.sdu.samus.enums.ResultCode;
 import com.sdu.samus.exception.ParameterException;
 import com.sdu.samus.exception.ServiceException;
 import com.sdu.samus.model.UserInfo;
+import com.sdu.samus.model.UserRelationship;
 import com.sdu.samus.util.StringUtil;
 import com.sdu.samus.vo.UserLoginVO;
 import com.sdu.samus.vo.UserRegisterVO;

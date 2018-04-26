@@ -6,10 +6,13 @@ import com.sdu.samus.exception.ParameterException;
 import com.sdu.samus.exception.ServiceException;
 import com.sdu.samus.model.School;
 import com.sdu.samus.model.UserInfo;
+import com.sdu.samus.model.UserRelationshipWithBLOBs;
 import com.sdu.samus.service.SchoolService;
+import com.sdu.samus.service.UserRelationshipService;
 import com.sdu.samus.service.UserService;
 import com.sdu.samus.util.ResultVoGenerator;
 import com.sdu.samus.util.SessionUtil;
+import com.sdu.samus.util.StringUtil;
 import com.sdu.samus.vo.ResultVO;
 import com.sdu.samus.vo.UserLoginVO;
 import com.sdu.samus.vo.UserRegisterVO;
@@ -19,6 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -26,12 +33,16 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private SchoolService schoolService;
+	@Autowired
+	private UserRelationshipService userRelationshipService;
 
 	private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@RequestMapping(value="/getUserInfo",method=RequestMethod.GET)
 	public UserInfo getUserInfo(@RequestParam("id") String id) throws ParameterException {
-		return userService.getUserInfo(id);
+		UserInfo userInfo = userService.getUserInfo(id);
+//		userInfo.setPassword(null);
+		return userInfo;
 	}
 
 	@RequestMapping(value="/login",method=RequestMethod.POST)
@@ -41,6 +52,7 @@ public class UserController {
 		//保存用户session
 		userInfo.setPassword(null);
 		SessionUtil.addSession(Constants.USER, userInfo);
+
 		return ResultVoGenerator.success();
 
 	}
@@ -58,7 +70,10 @@ public class UserController {
 		}catch(ServiceException se){
 			if(se.getCode() == 1011){		//如果没有注册
 				int res = userService.register(schoolid5,user.getXuehao(),user.getGender(),user.getPassword());
-
+				logger.info("register    [res]:"+res);
+				int res1 = userRelationshipService.registerRelationship(schoolid5,user.getXuehao(),school.getCity());
+				logger.info("registerRelationship    [res1]:"+res1);
+				logger.info("注册成功!");
 				//保存用户session
 				UserInfo userInfo = this.getUserInfo(schoolid5+user.getXuehao());
 				userInfo.setPassword(null);
@@ -70,8 +85,45 @@ public class UserController {
 			throw de;
 		}
 		//如果已经账户已经注册
+		logger.info("账户已经注册");
 		return ResultVoGenerator.error(ResultCode.ACCOUNT_HAS_REGISTERD);
+	}
 
+	/**
+	 * 获得推荐列表
+	 * @return
+	 * @throws ParameterException
+	 * @throws ServiceException
+	 * @throws DataAccessException
+	 */
+	@RequestMapping(value="/getRecommendList",method=RequestMethod.POST)
+	public ResultVO getRecommendList() throws ParameterException,ServiceException,DataAccessException{
+//		UserInfo user = (UserInfo)(((HttpSession)SessionUtil.getSessionInThread()).getAttribute(Constants.USER));
+		UserInfo user = (UserInfo)SessionUtil.getSession(Constants.USER);
+		logger.info("UserController   [SessionUtil.getSession(Constants.USER)]  :"+user);
+		logger.info("UserController   [user.getUserid()]  :"+user.getUserid());
+		UserRelationshipWithBLOBs userRelationshipWithBLOBs =userRelationshipService.getUserRelationship(user.getUserid());
+		String list = userRelationshipWithBLOBs.getRecomendlist();
+		logger.info(list);
+		ArrayList<String> res = StringUtil.split(list,"\\10");
+		return ResultVoGenerator.success(res);
+	}
 
+	/**
+	 * 获得推荐列表中的用户信息
+	 * @param map
+	 * @return
+	 * @throws ParameterException
+	 */
+	@RequestMapping(value="/getRecommendDetail",method=RequestMethod.POST)
+	public ResultVO getRecommendDetail(@RequestBody Map<String,String> map)throws ParameterException{
+		logger.info("contactId:"+map.get("contactId"));
+		UserInfo user = this.getUserInfo(map.get("contactId"));
+		user.setPassword(null);
+		logger.info("user:"+user);
+		String schoolName = schoolService.getSchoolById5(user.getSchoolid5()).getSchoolname();
+		logger.info("schoolName:"+schoolName);
+		user.setSchoolid5(schoolName);	//将传回前端的schoolid5编程schoolName
+		return ResultVoGenerator.success(user);
 	}
 }

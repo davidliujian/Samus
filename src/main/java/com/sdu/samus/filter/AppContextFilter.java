@@ -25,6 +25,7 @@ public class AppContextFilter implements Filter {
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
+		logger.info("-----------------进入AppContextFilter--------------------");
 
 		logger.info("AppContextFilter --- [request.getContextPath()]     :"+request.getContextPath());
 
