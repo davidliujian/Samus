@@ -37,7 +37,7 @@ public class UserController {
 
 	private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
-	@RequestMapping(value="/getUserInfo",method=RequestMethod.GET)
+	@RequestMapping(value="/getUser",method=RequestMethod.GET)
 	public UserInfo getUserInfo(@RequestParam("id") String id) throws ParameterException {
 		UserInfo userInfo = userService.getUserInfo(id);
 //		userInfo.setPassword(null);
@@ -91,46 +91,6 @@ public class UserController {
 	}
 
 	/**
-	 * 获得推荐列表，返回推荐列表，同时设置数据库active为1，即用户查看过此次推荐
-	 * @return
-	 * @throws ServiceException
-	 * @throws DataAccessException
-	 */
-	@RequestMapping(value="/getRecommendList",method=RequestMethod.POST)
-	public ResultVO getRecommendList() throws ServiceException,DataAccessException{
-		logger.info("------------------获得所有推荐人id--------------------------");
-		UserInfo user = (UserInfo)SessionUtil.getSession(Constants.USER);
-		logger.info("UserController   [SessionUtil.getSession(Constants.USER)]  :"+user);
-		logger.info("UserController   [user.getUserid()]  :"+user.getUserid());
-		UserRelationshipWithBLOBs userRelationshipWithBLOBs =userRelationshipService.getUserRelationship(user.getUserid());
-		String list = userRelationshipWithBLOBs.getRecomendlist();
-		logger.info(list);
-		ArrayList<String> res = StringUtil.split(list,"\\10");
-		//设置active为1
-		userRelationshipService.setActive(user.getUserid());
-		return ResultVoGenerator.success(res);
-	}
-
-	/**
-	 * 获得推荐列表中的用户信息
-	 * @param map
-	 * @return
-	 * @throws ParameterException
-	 */
-	@RequestMapping(value="/getRecommendDetail",method=RequestMethod.POST)
-	public ResultVO getRecommendDetail(@RequestBody Map<String,String> map)throws ParameterException{
-		logger.info("------------------获得推荐人详细信息--------------------------");
-		logger.info("contactId:"+map.get("contactId"));
-		UserInfo user = this.getUserInfo(map.get("contactId"));
-		user.setPassword(null);
-		logger.info("user:"+user);
-		String schoolName = schoolService.getSchoolById5(user.getSchoolid5()).getSchoolname();
-		logger.info("schoolName:"+schoolName);
-		user.setSchoolid5(schoolName);	//将传回前端的schoolid5编程schoolName
-		return ResultVoGenerator.success(user);
-	}
-
-	/**
 	 *
 	 * @return 返回联系人分组的组名列表
 	 */
@@ -160,4 +120,23 @@ public class UserController {
 		ArrayList<String> res = StringUtil.split(list,"\\10");
 		return ResultVoGenerator.success(res);
 	}
+
+	/**
+	 * 个人信息界面加载时，获取用户信息
+	 * @return
+	 * @throws DataAccessException
+	 * @throws ParameterException
+	 */
+	@RequestMapping(value ="/getUserInfo",method=RequestMethod.POST)
+	public ResultVO getUser() throws DataAccessException,ParameterException{
+		logger.info("------------------获得个人信息--------------------------");
+		UserInfo user = (UserInfo)SessionUtil.getSession(Constants.USER);
+
+		user.setPassword(null);
+		String schoolName = schoolService.getSchoolById5(user.getSchoolid5()).getSchoolname();
+
+		user.setSchoolid5(schoolName);	//将传回前端的schoolid5编程schoolName
+		return ResultVoGenerator.success(user);
+	}
+
 }

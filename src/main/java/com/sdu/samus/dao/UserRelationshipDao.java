@@ -22,4 +22,12 @@ public class UserRelationshipDao {
 	public int setActive(UserRelationshipWithBLOBs userRelationshipWithBLOBs){
 		return userRelationshipMapper.updateByPrimaryKeySelective(userRelationshipWithBLOBs);
 	}
+
+	public int updateDislike(String userid){
+		return userRelationshipMapper.updateDislikeByPrimaryKey(userid);
+	}
+
+	public int updateLike(String userid , String hobbyCount){
+		return userRelationshipMapper.updateLikeByPrimaryKey(userid,hobbyCount);
+	}
 }

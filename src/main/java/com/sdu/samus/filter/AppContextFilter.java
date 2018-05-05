@@ -47,6 +47,7 @@ public class AppContextFilter implements Filter {
 		try{
 			filterChain.doFilter(request,response);
 		}finally {
+			logger.info("-----------------离开AppContextFilter--------------------");
 			appContext.clear();
 		}
 	}

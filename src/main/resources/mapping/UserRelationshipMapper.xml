@@ -221,4 +221,16 @@
       groupList = #{grouplist,jdbcType=VARCHAR}
     where userId = #{userid,jdbcType=VARCHAR}
   </update>
+  <update id="updateDislikeByPrimaryKey" parameterType="java.lang.String">
+    update userrelationship
+    set totalCount = totalCount + 1
+    where userId = #{userid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateLikeByPrimaryKey">
+    update userrelationship
+    set totalCount = totalCount + 1,
+        likeCount = likeCount + 1,
+        hobbyCount = #{hobbyCount}
+    where userId = #{userid,jdbcType=VARCHAR}
+  </update>
 </mapper>

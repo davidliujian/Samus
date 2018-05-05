@@ -2,6 +2,7 @@ package com.sdu.samus.mapper;
 
 import com.sdu.samus.model.UserRelationship;
 import com.sdu.samus.model.UserRelationshipWithBLOBs;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Bean;
 
 public interface UserRelationshipMapper {
@@ -60,4 +61,9 @@ public interface UserRelationshipMapper {
      * @mbg.generated Mon Apr 23 19:07:20 CST 2018
      */
     int updateByPrimaryKey(UserRelationship record);
+
+    int updateDislikeByPrimaryKey(String userid);
+
+    //多参数传递之注解方式示
+    int updateLikeByPrimaryKey(@Param("userid") String userid,@Param("hobbyCount") String hobbyCount);
 }

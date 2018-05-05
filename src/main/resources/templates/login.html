@@ -3,11 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>login</title>
+    <script type="text/javascript" src="../static/jquery-3.2.1.min.js"></script>
 </head>
 <body>
-<form action="/login">
-    用户ID：<input type="text" />
-    密码：  <input type="password" />
+<form >
+    用户ID：<input type="text" id="1" />
+    密码：  <input type="password" id="2" />
+    <br />
 </form>
+<button id="btn">登录</button>
+<script type="text/javascript">
+$("#btn").click(function(){
+    $.ajax({
+        url:"http://localhost:8080/user/login",
+        type: "POST",
+        contentType: "application/json",
+        datatype:"JSON",
+        // 将XHR对象的withCredentials设为true
+        xhrFields:{
+            withCredentials:true
+        },
+        data:JSON.stringify({
+            "userId":"10002201599177541",
+            "password":"147553"
+        }),
+        success:function(result){
+            console.log(result);
+            window.location.href="websocket.html";//http://localhost:8080/user/getRecommendList
+        }}
+    );
+});
+
+
+
+    </script>
 </body>
 </html>

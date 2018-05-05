@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../static/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+<button id="btn">开始</button>
+<script>
+    $("#btn").click(function () {
+
+var webSocket = new WebSocket("ws://127.0.0.1:8080//ws");
+webSocket.onopen = function(event){
+console.log("连接成功");
+console.log(event);
+};
+webSocket.onerror = function(event){
+console.log("连接失败");
+console.log(event);
+};
+webSocket.onclose = function(event){
+console.log("Socket连接断开");
+console.log(event);
+};
+webSocket.onmessage = function(event){
+//接受来自服务器的消息
+//...
+}
+
+var data = {};//新建data对象，并规定属性名与相应的值
+data['fromId'] = "10002201599177541";
+data['fromName'] = "david";
+data['toId'] = "00335201228133654";
+data['messageText'] = "hello";
+webSocket.send(JSON.stringify(data));//将对象封装成JSON后发送至服务器
+
+    })
+</script>
+</body>
+</body>
+</html>
