@@ -1,7 +1,5 @@
 package com.sdu.samus.vo;
 
-import java.sql.Blob;
-
 public class UserUpdateVO {
 	private String password;
 	private String nickname;

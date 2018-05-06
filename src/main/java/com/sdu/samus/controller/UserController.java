@@ -120,7 +120,15 @@ public class UserController {
 		String list = userRelationshipWithBLOBs.getContactlist();
 		logger.info(list);
 		ArrayList<String> res = StringUtil.split(list,"\\10");
-		return ResultVoGenerator.success(res);
+		ArrayList<Contact> result = new ArrayList<>();
+
+		//修改返回的联系人以及其分组的格式
+		for(String s : res){
+			Contact con = new Contact(s.substring(0,s.indexOf(':')),s.substring(s.indexOf(':')+1));
+			result.add(con);
+		}
+
+		return ResultVoGenerator.success(result);
 	}
 
 	/**
@@ -153,5 +161,27 @@ public class UserController {
 		UserInfo user = (UserInfo)SessionUtil.getSession(Constants.USER);
 		userService.updateUserInfo(userInfo,user.getUserid());
 		return ResultVoGenerator.success();
+	}
+
+	//用于返回联系人列表时，每个人的name以及group
+	class Contact{
+		private String name;
+		private String group;
+
+		public Contact(){}
+
+		public Contact(String name,String group){
+			this.name = name;
+			this.group = group;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getGroup() {
+			return group;
+		}
+
 	}
 }

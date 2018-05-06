@@ -20,6 +20,6 @@ public class UserDao {
 	}
 
 	public int updateUser(UserInfo userInfo) throws DataAccessException{
-		return userInfoMapper.updateByPrimaryKey(userInfo);
+		return userInfoMapper.updateByPrimaryKeySelective(userInfo);
 	}
 }
