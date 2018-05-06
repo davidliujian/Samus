@@ -23,7 +23,7 @@ public class ExceptionHandler {
 	@ResponseBody
 	public ResultVO handlerParameterException(Exception e) {
 		_log.info("exception = {}", e.getMessage());
-
+		e.printStackTrace();
 		if (e instanceof DataAccessException) {
 			_log.info("DataAccessException");
 			return ResultVoGenerator.error(ResultCode.DB_EXCEPTION);

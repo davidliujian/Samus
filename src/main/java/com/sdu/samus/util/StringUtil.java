@@ -3,6 +3,8 @@ package com.sdu.samus.util;
 import java.util.ArrayList;
 
 public class StringUtil {
+	private static String string = "abcdefghijklmnopqrstuvwxyz";
+
 	public static boolean isEmpty(String data) {
 		if (data == null || data.equals("")) {
 			return true;
@@ -21,6 +23,19 @@ public class StringUtil {
 		list.add(sb.toString());
 
 		return list;
+	}
+
+	public static String generateRandom(int length){
+		StringBuffer sb = new StringBuffer();
+		int len = string.length();
+		for (int i = 0; i < length; i++) {
+			sb.append(string.charAt(getRandom(len-1)));
+		}
+		return sb.toString();
+	}
+
+	private static int getRandom(int count){
+   		return (int) Math.round(Math.random() * (count));
 	}
 
 }

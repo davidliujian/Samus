@@ -3,7 +3,7 @@ package com.sdu.samus.vo;
 public class UserUpdateVO {
 	private String password;
 	private String nickname;
-	private byte[] avatar;
+	private String avatar;
 	private Short age;
 	private byte gender;
 	private String intro;
@@ -11,7 +11,7 @@ public class UserUpdateVO {
 
 	public UserUpdateVO(){}
 
-	public UserUpdateVO(String password, String nickname, byte[] avatar, Short age, byte gender, String intro, String phone) {
+	public UserUpdateVO(String password, String nickname, String avatar, Short age, byte gender, String intro, String phone) {
 		this.password = password;
 		this.nickname = nickname;
 		this.avatar = avatar;
@@ -38,11 +38,11 @@ public class UserUpdateVO {
 		this.nickname = nickname;
 	}
 
-	public byte[] getAvatar() {
+	public String getAvatar() {
 		return avatar;
 	}
 
-	public void setAvatar(byte[] avatar) {
+	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
 

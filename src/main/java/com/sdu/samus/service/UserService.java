@@ -145,7 +145,7 @@ public class UserService {
 		userInfo.setPassword(user.getPassword());
 		userInfo.setGender(user.getGender());
 		userInfo.setAge(user.getAge());
-		userInfo.setAvatar(user.getAvatar());
+		userInfo.setAvatar(user.getAvatar().getBytes());
 		userInfo.setIntro(user.getIntro());
 		userInfo.setNickname(user.getNickname());
 		userInfo.setPhone(user.getPhone());
