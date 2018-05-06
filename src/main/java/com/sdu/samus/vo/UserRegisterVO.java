@@ -2,7 +2,7 @@ package com.sdu.samus.vo;
 
 public class UserRegisterVO {
 	private String xuehao;
-	private String schoolName;
+	private String schoolId5;
 	private byte gender;
 	private String password;
 
@@ -10,9 +10,9 @@ public class UserRegisterVO {
 
 	}
 
-	public UserRegisterVO(String xuehao, String schoolName,byte gender, String password) {
+	public UserRegisterVO(String xuehao, String schoolId5,byte gender, String password) {
 		this.xuehao = xuehao;
-		this.schoolName = schoolName;
+		this.schoolId5 = schoolId5;
 		this.gender = gender;
 		this.password = password;
 	}
@@ -25,12 +25,12 @@ public class UserRegisterVO {
 		this.xuehao = xuehao;
 	}
 
-	public String getSchoolName() {
-		return schoolName;
+	public String getSchoolId5() {
+		return schoolId5;
 	}
 
-	public void setSchoolName(String schoolName) {
-		this.schoolName = schoolName;
+	public void setSchoolId5(String schoolName) {
+		this.schoolId5 = schoolName;
 	}
 
 	public byte getGender(){
@@ -53,7 +53,7 @@ public class UserRegisterVO {
 	public String toString() {
 		return "UserRegisterVO{" +
 				"xuehao='" + xuehao + '\'' +
-				", schoolName='" + schoolName + '\'' +
+				", schoolName='" + schoolId5 + '\'' +
 				", password='" + password + '\'' +
 				'}';
 	}

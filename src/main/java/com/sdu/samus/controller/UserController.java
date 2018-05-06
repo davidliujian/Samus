@@ -16,6 +16,7 @@ import com.sdu.samus.util.StringUtil;
 import com.sdu.samus.vo.ResultVO;
 import com.sdu.samus.vo.UserLoginVO;
 import com.sdu.samus.vo.UserRegisterVO;
+import com.sdu.samus.vo.UserUpdateVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -60,10 +60,12 @@ public class UserController {
 	@RequestMapping(value="/register",method=RequestMethod.POST)
 	public ResultVO register(@RequestBody UserRegisterVO user) throws ParameterException,ServiceException,DataAccessException{
 		logger.info("------------------注册--------------------------");
-		logger.info(user.getSchoolName()+"  "+user.getXuehao()+"    "+user.getGender()+"    "+user.getPassword());
+		logger.info(user.getSchoolId5()+"  "+user.getXuehao()+"    "+user.getGender()+"    "+user.getPassword());
 		//根据学校名获取学校
-		School school = schoolService.getSchoolByName(user);
-		String schoolid5 = school.getSchoolid5();
+		School school = schoolService.getSchoolBySchoolId5(user);
+
+		//开始决定前端传过来的是学校名，之后改成前端存储schoolId5,直接传schoolId5
+		String schoolid5 = user.getSchoolId5();
 
 		//检测该账户是否已经注册
 		try{
@@ -72,7 +74,7 @@ public class UserController {
 			if(se.getCode() == 1011){		//如果没有注册
 				int res = userService.register(schoolid5,user.getXuehao(),user.getGender(),user.getPassword());
 				logger.info("register    [res]:"+res);
-				int res1 = userRelationshipService.registerRelationship(schoolid5,user.getXuehao(),school.getCity());
+				int res1 = userRelationshipService.registerRelationship(schoolid5,user.getXuehao(),school.getCity(),"0;0;0;0;0;0;0;0;0;0");
 				logger.info("registerRelationship    [res1]:"+res1);
 				logger.info("注册成功!");
 				//保存用户session
@@ -139,4 +141,16 @@ public class UserController {
 		return ResultVoGenerator.success(user);
 	}
 
+	/**
+	 * 修改个人信息，不包括兴趣标签
+	 * @return
+	 * @throws DataAccessException
+	 * @throws ParameterException
+	 */
+	@RequestMapping(value = "/updateUserInfo",method = RequestMethod.POST)
+	public ResultVO updateUser(@RequestBody UserUpdateVO user) throws DataAccessException,ParameterException{
+		logger.info("------------------更改个人信息--------------------------");
+
+		return ResultVoGenerator.success();
+	}
 }

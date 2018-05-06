@@ -1,17 +1,13 @@
 package com.sdu.samus.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.sql.Timestamp;
 
 public class Message {
-
 	private int messageId;
 	private int fromId;
 	private String fromName;
 	private int toId;
 	private String messageText;
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Timestamp messageDate;
 
 	public Message() {

@@ -4,7 +4,6 @@ import com.sdu.samus.dao.UserRelationshipDao;
 import com.sdu.samus.enums.ResultCode;
 import com.sdu.samus.exception.ParameterException;
 import com.sdu.samus.exception.ServiceException;
-import com.sdu.samus.model.UserRelationship;
 import com.sdu.samus.model.UserRelationshipWithBLOBs;
 import com.sdu.samus.util.StringUtil;
 import org.slf4j.Logger;
@@ -47,11 +46,12 @@ public class UserRelationshipService {
 		return res;
 	}
 
-	public int registerRelationship(String schoolid5,String xuehao,String city){
+	public int registerRelationship(String schoolid5,String xuehao,String city,String hobbyCount){
 		//新建userRelationship对象
 		UserRelationshipWithBLOBs userRelationship = new UserRelationshipWithBLOBs();
 		userRelationship.setUserid(schoolid5+xuehao);
 		userRelationship.setCity(city);
+		userRelationship.setHobbycount(hobbyCount);
 
 		return userRelationshipDao.registerRelationship(userRelationship);
 	}

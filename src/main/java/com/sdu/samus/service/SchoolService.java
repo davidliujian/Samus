@@ -17,18 +17,18 @@ public class SchoolService {
 	private SchoolDao schoolDao;
 	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-	public School getSchoolByName(UserRegisterVO user)throws ParameterException {
+	public School getSchoolBySchoolId5(UserRegisterVO user)throws ParameterException {
 		//判断参数是否异常
 		ParameterException pe  =new ParameterException();
-		if(StringUtil.isEmpty(user.getSchoolName())){
-			logger.info("SchoolService --- [user.getSchoolName]     :"+user.getSchoolName());
+		if(StringUtil.isEmpty(user.getSchoolId5())){
+			logger.info("SchoolService --- [user.getSchoolName]     :"+user.getSchoolId5());
 			pe.addError(ResultCode.SCHOOL_EMPTY);
 		}
 		if(pe.hasErrors()){
 			logger.info("SchoolService --- [ParameterException.hasErrors]     :"+pe.hasErrors());
 			throw pe;
 		}
-		return schoolDao.findSchoolByName(user.getSchoolName());
+		return schoolDao.findSchoolBySchoolId5(user.getSchoolId5());
 	}
 
 	public School getSchoolById5(String schoolid5)throws ParameterException {

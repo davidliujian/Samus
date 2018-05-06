@@ -15,6 +15,10 @@ public class SchoolDao {
 		return schoolMapper.selectBySchoolName(schoolname);
 	}
 
+	public School findSchoolBySchoolId5(String schoolId5) throws DataAccessException{
+		return schoolMapper.selectByPrimaryKey(schoolId5);
+	}
+
 	public School findSchoolById5(String schoolid5)throws DataAccessException {
 		return schoolMapper.selectByPrimaryKey(schoolid5);
 	}
