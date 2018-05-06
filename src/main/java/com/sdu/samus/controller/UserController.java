@@ -148,9 +148,10 @@ public class UserController {
 	 * @throws ParameterException
 	 */
 	@RequestMapping(value = "/updateUserInfo",method = RequestMethod.POST)
-	public ResultVO updateUser(@RequestBody UserUpdateVO user) throws DataAccessException,ParameterException{
+	public ResultVO updateUser(@RequestBody UserUpdateVO userInfo) throws DataAccessException,ParameterException{
 		logger.info("------------------更改个人信息--------------------------");
-
+		UserInfo user = (UserInfo)SessionUtil.getSession(Constants.USER);
+		userService.updateUserInfo(userInfo,user.getUserid());
 		return ResultVoGenerator.success();
 	}
 }

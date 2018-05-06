@@ -7,6 +7,7 @@ import com.sdu.samus.exception.ServiceException;
 import com.sdu.samus.model.UserInfo;
 import com.sdu.samus.util.StringUtil;
 import com.sdu.samus.vo.UserLoginVO;
+import com.sdu.samus.vo.UserUpdateVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,4 +119,41 @@ public class UserService {
 		return  result;
 	}
 
+	public int updateUserInfo(UserUpdateVO user,String userId) throws ParameterException{
+		//判断参数是否异常
+		ParameterException pe  =new ParameterException();
+		if(StringUtil.isEmpty(user.getNickname())){
+			logger.info("UserService --- [Nickname]     :"+user.getNickname());
+			pe.addError(ResultCode.USERNAME_EMPTY);
+		}
+		if(StringUtil.isEmpty(user.getPassword())){
+			logger.info("UserService --- [password]     :"+user.getPassword());
+			pe.addError(ResultCode.PASSWORD_EMPTY);
+		}
+		if(pe.getErrors().size() == 2){
+			pe.clearErrors();
+			pe.addError(ResultCode.NICKNAME_PASSWORD_EMPTY);
+		}
+		if(pe.hasErrors()){
+			logger.info("UserService --- [ParameterException.hasErrors]     :"+pe.hasErrors());
+			throw pe;
+		}
+
+		//新建UserInfo对象
+		UserInfo userInfo = new UserInfo();
+		userInfo.setUserid(userId);
+		userInfo.setPassword(user.getPassword());
+		userInfo.setGender(user.getGender());
+		userInfo.setAge(user.getAge());
+		userInfo.setAvatar(user.getAvatar());
+		userInfo.setIntro(user.getIntro());
+		userInfo.setNickname(user.getNickname());
+		userInfo.setPhone(user.getPhone());
+
+		int result = userDao.updateUser(userInfo);
+		if(result == 0){
+			throw new ServiceException(ResultCode.UPDATE_ERROR);
+		}
+		return  result;
+	}
 }

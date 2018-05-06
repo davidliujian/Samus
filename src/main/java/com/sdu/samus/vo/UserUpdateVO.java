@@ -5,15 +5,15 @@ import java.sql.Blob;
 public class UserUpdateVO {
 	private String password;
 	private String nickname;
-	private Blob avatar;
-	private Integer age;
+	private byte[] avatar;
+	private Short age;
 	private byte gender;
 	private String intro;
 	private String phone;
 
 	public UserUpdateVO(){}
 
-	public UserUpdateVO(String password, String nickname, Blob avatar, Integer age, byte gender, String intro, String phone) {
+	public UserUpdateVO(String password, String nickname, byte[] avatar, Short age, byte gender, String intro, String phone) {
 		this.password = password;
 		this.nickname = nickname;
 		this.avatar = avatar;
@@ -40,19 +40,19 @@ public class UserUpdateVO {
 		this.nickname = nickname;
 	}
 
-	public Blob getAvatar() {
+	public byte[] getAvatar() {
 		return avatar;
 	}
 
-	public void setAvatar(Blob avatar) {
+	public void setAvatar(byte[] avatar) {
 		this.avatar = avatar;
 	}
 
-	public Integer getAge() {
+	public Short getAge() {
 		return age;
 	}
 
-	public void setAge(Integer age) {
+	public void setAge(Short age) {
 		this.age = age;
 	}
 

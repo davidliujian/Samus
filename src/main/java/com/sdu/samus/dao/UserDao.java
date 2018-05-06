@@ -18,4 +18,8 @@ public class UserDao {
 	public int registerUser(UserInfo userInfo) throws DataAccessException{
 		return userInfoMapper.insertSelective(userInfo);
 	}
+
+	public int updateUser(UserInfo userInfo) throws DataAccessException{
+		return userInfoMapper.updateByPrimaryKey(userInfo);
+	}
 }
