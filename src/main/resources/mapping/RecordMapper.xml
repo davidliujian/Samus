@@ -50,6 +50,24 @@
     where userId = #{userid,jdbcType=VARCHAR}
       and recordId = #{recordid,jdbcType=INTEGER}
   </select>
+
+  <select id="getRecordCount" parameterType="java.lang.String" resultType="int">
+    SELECT count(*) AS recordCount
+    FROM record
+    where userId = #{userid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectRecordList" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from record
+    where userId = #{userid,jdbcType=VARCHAR}
+    ORDER BY createTime
+    LIMIT #{offset} , #{pageSize}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="com.sdu.samus.model.RecordKey">
     <!--
       WARNING - @mbg.generated

@@ -34,7 +34,8 @@ public enum ResultCode {
 	UPDATE_ERROR(1019, "更改错误"),
 	REFLECT_ERROR(1020, "反射错误"),
 	NICKNAME_PASSWORD_EMPTY(1021,"昵称和密码为空！"),
-	PUBLISH_WRONG(1022,"Publish failed");
+	PUBLISH_WRONG(1022,"Publish failed"),
+	END_RECORD(1023,"NO more records");
 
 	private Integer code;
 
