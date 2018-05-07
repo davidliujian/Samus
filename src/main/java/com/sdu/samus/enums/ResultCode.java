@@ -35,7 +35,8 @@ public enum ResultCode {
 	REFLECT_ERROR(1020, "反射错误"),
 	NICKNAME_PASSWORD_EMPTY(1021,"昵称和密码为空！"),
 	PUBLISH_WRONG(1022,"Publish failed"),
-	END_RECORD(1023,"NO more records");
+	END_RECORD(1023,"NO more records"),
+	RECORD_EMPTY(1024,"Record is empty");
 
 	private Integer code;
 

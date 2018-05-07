@@ -16,11 +16,6 @@ public class Constants {
 	public static final String APP_CONTEXT_USER = "APP_CONTEXT_USER";
 	public static final String APP_CONTEXT_ADMIN_USER = "APP_CONTEXT_ADMIN_USER";
 
-	public static final String APP_URL_PREFIX = "page";
-
-	public static final String APP_URL_BOOK_PREFIX = "/page/book";
-	public static final String APP_URL_USER_PREFIX = "/page/user";
-
 	public static final String IMG_PATH = "C:\\Users\\David\\Desktop\\毕业课设\\Samus\\src\\main\\samusImg\\";
-	//"src/main/resources/recordImg";
+
 }

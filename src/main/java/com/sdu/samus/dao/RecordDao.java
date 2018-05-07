@@ -5,6 +5,7 @@ import com.sdu.samus.exception.ParameterException;
 import com.sdu.samus.mapper.RecordMapper;
 import com.sdu.samus.model.Pagination;
 import com.sdu.samus.model.Record;
+import com.sdu.samus.model.RecordKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -42,5 +43,13 @@ public class RecordDao {
 
 	public int getRecordCount(String userid) {
 		return recordMapper.getRecordCount(userid);
+	}
+
+	public Record getRecord(RecordKey key) throws DataAccessException{
+		return recordMapper.selectByPrimaryKey(key);
+	}
+
+	public int deleteRecord(RecordKey key)throws DataAccessException{
+		return recordMapper.deleteByPrimaryKey(key);
 	}
 }

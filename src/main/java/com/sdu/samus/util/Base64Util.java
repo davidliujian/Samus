@@ -49,17 +49,7 @@ public class Base64Util {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-//
-//		InputStream inputStream = null;
-//		byte[] data = null;
-//		try {
-//			inputStream = new FileInputStream(imgFile);
-//			data = new byte[inputStream.available()];
-//			inputStream.read(data);
-//			inputStream.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+
 		// 加密
 		BASE64Encoder encoder = new BASE64Encoder();
 		String base64 = encoder.encode(data).trim();//转换成base64串

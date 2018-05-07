@@ -7,6 +7,7 @@ import com.sdu.samus.exception.ParameterException;
 import com.sdu.samus.exception.ServiceException;
 import com.sdu.samus.model.Pagination;
 import com.sdu.samus.model.Record;
+import com.sdu.samus.model.RecordKey;
 import com.sdu.samus.util.Base64Util;
 import com.sdu.samus.util.StringUtil;
 import com.sdu.samus.vo.RecordDTO;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,5 +85,48 @@ public class RecordService {
 			listRes.add(rDTO);
 		}
 		return listRes;
+	}
+
+	public Record getRecord(RecordKey key){
+		return recordDao.getRecord(key);
+	}
+
+	public int deleteRecord(String userId,String recordId) throws ParameterException,ServiceException{
+		//判断参数是否异常
+		ParameterException pe  =new ParameterException();
+		if(StringUtil.isEmpty(recordId)){
+			pe.addError(ResultCode.RECORD_EMPTY);
+		}
+		if(pe.hasErrors()){
+			throw pe;
+		}
+		RecordKey key = new RecordKey();
+		key.setUserid(userId);
+		key.setRecordid(Integer.parseInt(recordId));
+
+		Record record = this.getRecord(key);
+		String pic = record.getPicture();
+
+		int result = recordDao.deleteRecord(key);
+		if(result == 0){
+			throw new ServiceException(ResultCode.DELETE_ERROR);
+		}else{		//删除文件系统的图片
+			File f = null;
+			for(String s : StringUtil.split(pic,";")){
+				//删除文件
+				File file = new File(s);
+				if(f == null){
+					f = file.getParentFile();
+				}
+				if(file.exists()){
+					file.delete();
+				}
+			}
+			//判断这个文件夹是否为空，为空则删除
+			if(f.listFiles().length == 0){
+				f.delete();
+			}
+		}
+		return  result;
 	}
 }

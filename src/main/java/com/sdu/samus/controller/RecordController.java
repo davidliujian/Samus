@@ -3,7 +3,6 @@ package com.sdu.samus.controller;
 import com.sdu.samus.Constants;
 import com.sdu.samus.exception.ParameterException;
 import com.sdu.samus.model.Pagination;
-import com.sdu.samus.model.Record;
 import com.sdu.samus.model.UserInfo;
 import com.sdu.samus.service.RecordService;
 import com.sdu.samus.util.ResultVoGenerator;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/record")
@@ -51,5 +51,12 @@ public class RecordController {
 		return ResultVoGenerator.success(records);
 	}
 
+	@RequestMapping(value = "/deleteRecord",method = RequestMethod.POST)
+	public ResultVO deleteRecord(@RequestBody Map<String,String> map) throws ParameterException{
+		String recordId = map.get("recordId");
+		UserInfo user =(UserInfo) SessionUtil.getSession(Constants.USER);
+		recordService.deleteRecord(user.getUserid(),recordId);
+		return ResultVoGenerator.success();
+	}
 
 }
