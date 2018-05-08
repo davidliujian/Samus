@@ -1,6 +1,8 @@
 package com.sdu.samus.filter;
 
 import com.sdu.samus.Constants;
+import com.sdu.samus.enums.ResultCode;
+import com.sdu.samus.exception.ServiceException;
 import com.sdu.samus.model.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,14 +30,14 @@ public class SessionFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-//		String loginRegex = ".*/login";
-//		String registerRegex = ".*/register";
-//		patterns.add(Pattern.compile(loginRegex));
-//		patterns.add(Pattern.compile(registerRegex));
+		String loginRegex = ".*/login";
+		String registerRegex = ".*/register";
+		patterns.add(Pattern.compile(loginRegex));
+		patterns.add(Pattern.compile(registerRegex));
 	}
 
 	@Override
-	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException,ServiceException {
 		HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
 		HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
 		logger.info("-----------------进入SessionFilter--------------------");
@@ -59,11 +61,12 @@ public class SessionFilter implements Filter {
 				chain.doFilter(httpRequest, httpResponse);
 			} else {
 				logger.info("SessionFilter --- [session不存在]");
-				// session不存在 准备跳转失败
-                /* RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-                    dispatcher.forward(request, response);或
-                    servletResponse.sendRedirect(PathUtil.getFullPath("user/login"));*/
-				chain.doFilter(httpRequest, httpResponse);
+				throw new ServiceException(ResultCode.NOT_LOGIN);
+//				// session不存在 准备跳转失败
+//                /* RequestDispatcher dispatcher = request.getRequestDispatcher(path);
+//                    dispatcher.forward(request, response);或
+//                    servletResponse.sendRedirect(PathUtil.getFullPath("user/login"));*/
+//				chain.doFilter(httpRequest, httpResponse);
 			}
 		}
 	}

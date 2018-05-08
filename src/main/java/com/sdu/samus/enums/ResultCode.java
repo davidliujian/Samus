@@ -36,7 +36,9 @@ public enum ResultCode {
 	NICKNAME_PASSWORD_EMPTY(1021,"昵称和密码为空！"),
 	PUBLISH_WRONG(1022,"Publish failed"),
 	END_RECORD(1023,"NO more records"),
-	RECORD_EMPTY(1024,"Record is empty");
+	RECORD_EMPTY(1024,"Record is empty"),
+	LOG_INSERT_ERROR(1025,"Insert log failed"),
+	NOT_LOGIN(1026,"Have not login");
 
 	private Integer code;
 

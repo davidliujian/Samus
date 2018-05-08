@@ -6,8 +6,10 @@ import com.sdu.samus.exception.ParameterException;
 import com.sdu.samus.exception.ServiceException;
 import com.sdu.samus.model.School;
 import com.sdu.samus.model.UserInfo;
+import com.sdu.samus.model.UserLog;
 import com.sdu.samus.model.UserRelationshipWithBLOBs;
 import com.sdu.samus.service.SchoolService;
+import com.sdu.samus.service.UserLogService;
 import com.sdu.samus.service.UserRelationshipService;
 import com.sdu.samus.service.UserService;
 import com.sdu.samus.util.ResultVoGenerator;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 @RestController
@@ -31,6 +34,8 @@ public class UserController {
 	private SchoolService schoolService;
 	@Autowired
 	private UserRelationshipService userRelationshipService;
+	@Autowired
+	private UserLogService userLogService;
 
 	private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -46,9 +51,23 @@ public class UserController {
 		logger.info("------------------登录-------------------------");
 		//获取信息
 		UserInfo userInfo = userService.login(user);
+
+		//生成logid
+		int logid = StringUtil.generateIntRandom(7);
+		//插入userlog表
+		UserLog userLog = new UserLog();
+		userLog.setLogid(logid);
+		userLog.setUserid(user.getUserId());
+		Timestamp time1 = new Timestamp(System.currentTimeMillis());
+		userLog.setLogintime(time1);
+		userLogService.insertLog(userLog);
+		logger.info("插入日志成功！！！");
+
 		//保存用户session
 		userInfo.setPassword(null);
 		SessionUtil.addSession(Constants.USER, userInfo);
+		//保存logid进session
+		SessionUtil.addSession(Constants.LOG_ID,logid);
 
 		return ResultVoGenerator.success();
 
@@ -87,6 +106,25 @@ public class UserController {
 		//如果已经账户已经注册
 		logger.info("账户已经注册");
 		return ResultVoGenerator.error(ResultCode.ACCOUNT_HAS_REGISTERD);
+	}
+
+	@RequestMapping(value = "/logout",method = RequestMethod.POST)
+	public ResultVO logout(){
+		logger.info("------------------退出-------------------------");
+		UserInfo user = (UserInfo)SessionUtil.getSession(Constants.USER);
+		//update UserLog表
+		int logid = (Integer)SessionUtil.getSession(Constants.LOG_ID);
+		UserLog userLog = new UserLog();
+		userLog.setLogid(logid);
+		userLog.setUserid(user.getUserid());
+		Timestamp time1 = new Timestamp(System.currentTimeMillis());
+		userLog.setLogouttime(time1);
+		userLogService.updateLog(userLog);
+		logger.info("修改日志的logouttime成功！！！");
+		//清除session
+		SessionUtil.removeSession(Constants.USER);
+		SessionUtil.removeSession(Constants.LOG_ID);
+		return ResultVoGenerator.success();
 	}
 
 	/**

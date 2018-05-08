@@ -41,10 +41,8 @@ public class SessionUtil {
 	public static Object getSession(String key) {
 		Object session = getSessionInThread();
 		if (session == null) {
-			logger.info("session 为空");
 			return null;
 		}
-		logger.info("session 不为空");
 		try {
 			Class<?>[] param = new Class[1];
 			param[0] = String.class;
@@ -69,12 +67,12 @@ public class SessionUtil {
 			return;
 		}
 		try {
-			Class<?>[] param = new Class[2];
+			Class<?>[] param = new Class[1];
 			param[0] = String.class;
 
 			Method method = session.getClass().getMethod("removeAttribute", param);
 
-			Object[] objects = new Object[2];
+			Object[] objects = new Object[1];
 			objects[0] = key;
 
 			method.invoke(session, objects);

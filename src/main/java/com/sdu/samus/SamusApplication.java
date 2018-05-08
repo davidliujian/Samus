@@ -1,6 +1,5 @@
 package com.sdu.samus;
 
-import com.sdu.samus.util.StringUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestMapping;

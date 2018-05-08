@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class StringUtil {
 	private static String string = "abcdefghijklmnopqrstuvwxyz";
+	private static String integer = "0123456789";
 
 	public static boolean isEmpty(String data) {
 		if (data == null || data.equals("")) {
@@ -32,6 +33,15 @@ public class StringUtil {
 			sb.append(string.charAt(getRandom(len-1)));
 		}
 		return sb.toString();
+	}
+
+	public static Integer generateIntRandom(int length){
+		StringBuffer sb = new StringBuffer();
+		int len = integer.length();
+		for (int i = 0; i < length; i++) {
+			sb.append(integer.charAt(getRandom(len-1)));
+		}
+		return Integer.parseInt(sb.toString());
 	}
 
 	private static int getRandom(int count){
