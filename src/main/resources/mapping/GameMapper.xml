@@ -108,4 +108,19 @@
       gameCount = #{gamecount,jdbcType=INTEGER}
     where gameId = #{gameid,jdbcType=INTEGER}
   </update>
+  <update id="deUpdate">
+    update game
+    set gameCount = gameCount-1
+    where gameName = #{gameName,jdbcType=VARCHAR}
+  </update>
+  <update id="inUpdate">
+    update game
+    set gameCount = gameCount+1
+    where gameName = #{gameName,jdbcType=VARCHAR}
+  </update>
+  <select id="hasGame" parameterType="java.lang.String" resultType="int">
+    select count(*)
+    from game
+    where gameName = #{gameName,jdbcType=VARCHAR}
+  </select>
 </mapper>

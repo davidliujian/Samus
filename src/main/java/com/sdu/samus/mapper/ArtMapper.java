@@ -50,4 +50,10 @@ public interface ArtMapper {
      * @mbg.generated Sun May 06 10:37:18 CST 2018
      */
     int updateByPrimaryKey(Art record);
+
+    int deUpdate(String artname);
+
+    int inUpdate(String artname);
+
+    int hasArt(String artname);
 }

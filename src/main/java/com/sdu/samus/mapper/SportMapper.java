@@ -50,4 +50,10 @@ public interface SportMapper {
      * @mbg.generated Sun May 06 10:37:18 CST 2018
      */
     int updateByPrimaryKey(Sport record);
+
+    int deUpdate(String sportName);
+
+    int inUpdate(String sportName);
+
+    int hasSport(String sportName);
 }

@@ -108,4 +108,9 @@
       count = #{count,jdbcType=INTEGER}
     where hobbyId = #{hobbyid,jdbcType=INTEGER}
   </update>
+  <update id="updateCount">
+    update hobbyinfo
+    set `count`=`count`+1
+    where hobby = #{hobby,jdbcType=VARCHAR}
+  </update>
 </mapper>

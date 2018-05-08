@@ -50,4 +50,10 @@ public interface MusicMapper {
      * @mbg.generated Sun May 06 10:37:18 CST 2018
      */
     int updateByPrimaryKey(Music record);
+
+    int deUpdate(String musicName);
+
+    int inUpdate(String musicName);
+
+    int hasMusic(String musicName);
 }

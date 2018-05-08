@@ -108,4 +108,20 @@
       sportCount = #{sportcount,jdbcType=INTEGER}
     where sportId = #{sportid,jdbcType=INTEGER}
   </update>
+  <update id="deUpdate">
+    update sport
+    set sportCount = sportCount-1
+    where sportName = #{sportName,jdbcType=VARCHAR}
+  </update>
+  <update id="inUpdate">
+    update sport
+    set sportCount = sportCount+1
+    where sportName = #{sportName,jdbcType=VARCHAR}
+  </update>
+  <select id="hasSport" parameterType="java.lang.String" resultType="int">
+    select count(*)
+    from sport
+    where sportName = #{sportName,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

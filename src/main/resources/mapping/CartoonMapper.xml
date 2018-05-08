@@ -108,4 +108,19 @@
       cartoonCount = #{cartooncount,jdbcType=INTEGER}
     where cartoonId = #{cartoonid,jdbcType=INTEGER}
   </update>
+  <update id="deUpdate">
+    update cartoon
+    set cartoonCount = cartoonCount-1
+    where cartoonName = #{cartoonname,jdbcType=VARCHAR}
+  </update>
+  <update id="inUpdate">
+    update cartoon
+    set cartoonCount = cartoonCount+1
+    where cartoonName = #{cartoonname,jdbcType=VARCHAR}
+  </update>
+  <select id="hasCartoon" parameterType="java.lang.String" resultType="int">
+    select count(*)
+    from cartoon
+    where cartoonName = #{cartoonName,jdbcType=VARCHAR}
+  </select>
 </mapper>

@@ -108,4 +108,19 @@
       idolCount = #{idolcount,jdbcType=INTEGER}
     where idolId = #{idolid,jdbcType=INTEGER}
   </update>
+  <update id="deUpdate">
+    update idol
+    set idolCount = idolCount-1
+    where idolName = #{idolName,jdbcType=VARCHAR}
+  </update>
+  <update id="inUpdate">
+    update idol
+    set idolCount = idolCount+1
+    where idolName = #{idolName,jdbcType=VARCHAR}
+  </update>
+  <select id="hasIdol" parameterType="java.lang.String" resultType="int">
+    select count(*)
+    from idol
+    where idolName = #{idolName,jdbcType=VARCHAR}
+  </select>
 </mapper>

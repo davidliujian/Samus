@@ -50,4 +50,10 @@ public interface ReadingMapper {
      * @mbg.generated Sun May 06 10:37:18 CST 2018
      */
     int updateByPrimaryKey(Reading record);
+
+    int deUpdate(String readingName);
+
+    int inUpdate(String readingName);
+
+    int hasReading(String readingName);
 }

@@ -50,4 +50,10 @@ public interface MovieMapper {
      * @mbg.generated Sun May 06 10:37:18 CST 2018
      */
     int updateByPrimaryKey(Movie record);
+
+    int deUpdate(String movieName);
+
+    int inUpdate(String movieName);
+
+    int hasMovie(String movieName);
 }

@@ -50,4 +50,10 @@ public interface TravelMapper {
      * @mbg.generated Sun May 06 10:37:18 CST 2018
      */
     int updateByPrimaryKey(Travel record);
+
+    int deUpdate(String travelName);
+
+    int inUpdate(String travelName);
+
+    int hasTravel(String travelName);
 }

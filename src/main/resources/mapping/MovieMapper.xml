@@ -108,4 +108,19 @@
       movieCount = #{moviecount,jdbcType=INTEGER}
     where movieId = #{movieid,jdbcType=INTEGER}
   </update>
+  <update id="deUpdate">
+    update movie
+    set movieCount = movieCount-1
+    where movieName = #{movieName,jdbcType=VARCHAR}
+  </update>
+  <update id="inUpdate">
+    update movie
+    set movieCount = movieCount+1
+    where movieName = #{movieName,jdbcType=VARCHAR}
+  </update>
+  <select id="hasMovie" parameterType="java.lang.String" resultType="int">
+    select count(*)
+    from movie
+    where movieName = #{movieName,jdbcType=VARCHAR}
+  </select>
 </mapper>

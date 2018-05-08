@@ -108,4 +108,20 @@
       musicCount = #{musiccount,jdbcType=INTEGER}
     where musicId = #{musicid,jdbcType=INTEGER}
   </update>
+  <update id="deUpdate">
+    update music
+    set musicCount = musicCount-1
+    where musicName = #{musicName,jdbcType=VARCHAR}
+  </update>
+  <update id="inUpdate">
+    update music
+    set musicCount = musicCount+1
+    where musicName = #{musicName,jdbcType=VARCHAR}
+  </update>
+  <select id="hasMusic" parameterType="java.lang.String" resultType="int">
+    select count(*)
+    from music
+    where musicName = #{musicName,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

@@ -50,4 +50,10 @@ public interface IdolMapper {
      * @mbg.generated Sun May 06 10:37:18 CST 2018
      */
     int updateByPrimaryKey(Idol record);
+
+    int deUpdate(String idolName);
+
+    int inUpdate(String idolName);
+
+    int hasIdol(String idolName);
 }

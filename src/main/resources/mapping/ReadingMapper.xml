@@ -108,4 +108,20 @@
       readingCount = #{readingcount,jdbcType=INTEGER}
     where readingId = #{readingid,jdbcType=INTEGER}
   </update>
+  <update id="deUpdate">
+    update reading
+    set readingCount = readingCount-1
+    where readingName = #{readingName,jdbcType=VARCHAR}
+  </update>
+  <update id="inUpdate">
+    update reading
+    set readingCount = readingCount+1
+    where readingName = #{readingName,jdbcType=VARCHAR}
+  </update>
+  <select id="hasReading" parameterType="java.lang.String" resultType="int">
+    select count(*)
+    from reading
+    where readingName = #{readingName,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

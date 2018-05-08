@@ -50,4 +50,10 @@ public interface CartoonMapper {
      * @mbg.generated Sun May 06 10:37:18 CST 2018
      */
     int updateByPrimaryKey(Cartoon record);
+
+    int deUpdate(String cartoonName);
+
+    int inUpdate(String cartoonName);
+
+    int hasCartoon(String cartoonName);
 }

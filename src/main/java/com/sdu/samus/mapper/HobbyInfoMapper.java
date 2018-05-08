@@ -50,4 +50,6 @@ public interface HobbyInfoMapper {
      * @mbg.generated Sun May 06 10:37:18 CST 2018
      */
     int updateByPrimaryKey(HobbyInfo record);
+
+    int updateCount(String hobby);
 }

@@ -13,10 +13,7 @@ import com.sdu.samus.service.UserService;
 import com.sdu.samus.util.ResultVoGenerator;
 import com.sdu.samus.util.SessionUtil;
 import com.sdu.samus.util.StringUtil;
-import com.sdu.samus.vo.ResultVO;
-import com.sdu.samus.vo.UserLoginVO;
-import com.sdu.samus.vo.UserRegisterVO;
-import com.sdu.samus.vo.UserUpdateVO;
+import com.sdu.samus.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,6 +157,14 @@ public class UserController {
 		logger.info("------------------更改个人信息--------------------------");
 		UserInfo user = (UserInfo)SessionUtil.getSession(Constants.USER);
 		userService.updateUserInfo(userInfo,user.getUserid());
+		return ResultVoGenerator.success();
+	}
+
+	@RequestMapping(value = "/updateHobby",method = RequestMethod.POST)
+	public ResultVO updateHobby(@RequestBody HobbyVO hobbyVO) throws ParameterException,ServiceException{
+		logger.info("------------------更改个人兴趣标签--------------------------");
+		UserInfo user = (UserInfo) SessionUtil.getSession(Constants.USER);
+		userService.updateHobby(hobbyVO,user.getUserid());
 		return ResultVoGenerator.success();
 	}
 

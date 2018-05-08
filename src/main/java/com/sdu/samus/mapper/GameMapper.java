@@ -50,4 +50,10 @@ public interface GameMapper {
      * @mbg.generated Sun May 06 10:37:18 CST 2018
      */
     int updateByPrimaryKey(Game record);
+
+    int deUpdate(String gameName);
+
+    int inUpdate(String gameName);
+
+    int hasGame(String gameName);
 }

@@ -108,4 +108,19 @@
       foodCount = #{foodcount,jdbcType=INTEGER}
     where foodId = #{foodid,jdbcType=INTEGER}
   </update>
+  <update id="deUpdate">
+    update food
+    set foodCount = foodCount-1
+    where foodName = #{foodName,jdbcType=VARCHAR}
+  </update>
+  <update id="inUpdate">
+    update food
+    set foodCount = foodCount+1
+    where foodName = #{foodName,jdbcType=VARCHAR}
+  </update>
+  <select id="hasFood" parameterType="java.lang.String" resultType="int">
+    select count(*)
+    from food
+    where foodName = #{foodName,jdbcType=VARCHAR}
+  </select>
 </mapper>

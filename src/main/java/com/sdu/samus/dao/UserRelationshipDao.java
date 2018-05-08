@@ -1,6 +1,7 @@
 package com.sdu.samus.dao;
 
 import com.sdu.samus.mapper.UserRelationshipMapper;
+import com.sdu.samus.model.UserRelationship;
 import com.sdu.samus.model.UserRelationshipWithBLOBs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -29,5 +30,9 @@ public class UserRelationshipDao {
 
 	public int updateLike(String userid , String hobbyCount){
 		return userRelationshipMapper.updateLikeByPrimaryKey(userid,hobbyCount);
+	}
+
+	public int updateFeature(UserRelationshipWithBLOBs userRelationship){
+		return userRelationshipMapper.updateByPrimaryKeySelective(userRelationship);
 	}
 }
