@@ -1,7 +1,6 @@
 package com.sdu.samus.dao;
 
 import com.sdu.samus.mapper.MovieMapper;
-import com.sdu.samus.model.Idol;
 import com.sdu.samus.model.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

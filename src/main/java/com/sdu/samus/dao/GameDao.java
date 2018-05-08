@@ -1,8 +1,6 @@
 package com.sdu.samus.dao;
 
-import com.sdu.samus.mapper.FoodMapper;
 import com.sdu.samus.mapper.GameMapper;
-import com.sdu.samus.model.Food;
 import com.sdu.samus.model.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

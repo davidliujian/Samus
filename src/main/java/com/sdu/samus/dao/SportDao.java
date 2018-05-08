@@ -1,8 +1,6 @@
 package com.sdu.samus.dao;
 
-import com.sdu.samus.mapper.ReadingMapper;
 import com.sdu.samus.mapper.SportMapper;
-import com.sdu.samus.model.Reading;
 import com.sdu.samus.model.Sport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
