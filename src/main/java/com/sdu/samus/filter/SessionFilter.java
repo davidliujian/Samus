@@ -61,12 +61,12 @@ public class SessionFilter implements Filter {
 				chain.doFilter(httpRequest, httpResponse);
 			} else {
 				logger.info("SessionFilter --- [session不存在]");
-				throw new ServiceException(ResultCode.NOT_LOGIN);
+//				throw new ServiceException(ResultCode.NOT_LOGIN);
 //				// session不存在 准备跳转失败
 //                /* RequestDispatcher dispatcher = request.getRequestDispatcher(path);
 //                    dispatcher.forward(request, response);或
 //                    servletResponse.sendRedirect(PathUtil.getFullPath("user/login"));*/
-//				chain.doFilter(httpRequest, httpResponse);
+				chain.doFilter(httpRequest, httpResponse);
 			}
 		}
 	}

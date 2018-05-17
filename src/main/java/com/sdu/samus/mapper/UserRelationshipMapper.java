@@ -64,5 +64,5 @@ public interface UserRelationshipMapper {
     int updateDislikeByPrimaryKey(String userid);
 
     //多参数传递之注解方式示
-    int updateLikeByPrimaryKey(@Param("userid") String userid, @Param("hobbyCount") String hobbyCount);
+    int updateLikeByPrimaryKey(@Param("userid") String userid, @Param("hobbyCount") String hobbyCount,@Param("likeList") String likeList);
 }

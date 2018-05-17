@@ -4,9 +4,9 @@ import java.sql.Timestamp;
 
 public class Message {
 	private int messageId;
-	private int fromId;
+	private String fromId;
 	private String fromName;
-	private int toId;
+	private String toId;
 	private String messageText;
 	private Timestamp messageDate;
 
@@ -21,11 +21,11 @@ public class Message {
 		this.messageId = messageId;
 	}
 
-	public int getFromId() {
+	public String getFromId() {
 		return fromId;
 	}
 
-	public void setFromId(int fromId) {
+	public void setFromId(String fromId) {
 		this.fromId = fromId;
 	}
 
@@ -37,11 +37,11 @@ public class Message {
 		this.fromName = fromName;
 	}
 
-	public int getToId() {
+	public String getToId() {
 		return toId;
 	}
 
-	public void setToId(int toId) {
+	public void setToId(String toId) {
 		this.toId = toId;
 	}
 

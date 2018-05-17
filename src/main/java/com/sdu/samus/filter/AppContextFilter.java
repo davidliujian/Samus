@@ -5,6 +5,7 @@ import com.sdu.samus.Constants;
 import com.sdu.samus.model.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.server.ServerHttpRequest;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

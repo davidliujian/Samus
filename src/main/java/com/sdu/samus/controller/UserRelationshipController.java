@@ -52,10 +52,16 @@ public class UserRelationshipController {
 		UserRelationshipWithBLOBs userRelationshipWithBLOBs =userRelationshipService.getUserRelationship(user.getUserid());
 		String list = userRelationshipWithBLOBs.getRecomendlist();
 		logger.info(list);
-		ArrayList<String> res = StringUtil.split(list,"\\10");
+
 		//设置active为1
 		userRelationshipService.setActive(user.getUserid());
-		return ResultVoGenerator.success(res);
+
+		if(StringUtil.isEmpty(list)){
+			return ResultVoGenerator.success();
+		}else{
+			ArrayList<String> res = StringUtil.split(list,";");
+			return ResultVoGenerator.success(res);
+		}
 	}
 
 	/**

@@ -16,7 +16,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
 		//前台 可以使用websocket环境  ,添加websocket处理器，添加握手拦截器
-		webSocketHandlerRegistry.addHandler(webSocketHandler,"/ws").addInterceptors(new MyHandShakeInterceptor());
+		webSocketHandlerRegistry.addHandler(webSocketHandler,"/ws").addInterceptors(new MyHandShakeInterceptor()).setAllowedOrigins("*");
 		//前台 不可以使用websocket环境，则使用sockjs进行模拟连接
 		webSocketHandlerRegistry.addHandler(webSocketHandler, "/ws/sockjs").addInterceptors(new MyHandShakeInterceptor()).withSockJS();
 	}

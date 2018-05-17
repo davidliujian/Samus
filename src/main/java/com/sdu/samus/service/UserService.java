@@ -13,6 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.misc.BASE64Decoder;
+
+import java.io.IOException;
 
 @Service
 public class UserService {
@@ -136,6 +139,7 @@ public class UserService {
 		userInfo.setPassword(password);
 		userInfo.setGender(gender);
 		userInfo.setSchoolid5(schoolid5);
+		userInfo.setNickname(StringUtil.generateRandom(5));
 
 		int result = userDao.registerUser(userInfo);
 
@@ -171,11 +175,26 @@ public class UserService {
 		userInfo.setPassword(user.getPassword());
 		userInfo.setGender(user.getGender());
 		userInfo.setAge(user.getAge());
-		userInfo.setAvatar(user.getAvatar().getBytes());
+
+		String avatar =user.getAvatar();
+		// 去掉base64数据头部data:image/png;base64,和尾部的” " “
+		String[] ww= avatar.split(",");
+		avatar = ww[1];
+		String[] aa = avatar.split("\"");
+		avatar = aa[0];
+		//base64字符串解码为byte数组
+		BASE64Decoder decoder = new sun.misc.BASE64Decoder();
+		try {
+			byte[] bytes1 = decoder.decodeBuffer(avatar);
+			userInfo.setAvatar(bytes1);
+		} catch (IOException e) {
+			throw new ServiceException(ResultCode.UPDATE_ERROR);
+		}
+
 		userInfo.setIntro(user.getIntro());
 		userInfo.setNickname(user.getNickname());
 		userInfo.setPhone(user.getPhone());
-
+		logger.info("转化byte数组后的头像"+userInfo.getAvatar());
 		int result = userDao.updateUser(userInfo);
 		if(result == 0){
 			throw new ServiceException(ResultCode.UPDATE_ERROR);
@@ -200,7 +219,7 @@ public class UserService {
 			}
 
 			//查看art表中是否有用户提交的兴趣，如果没有则新建，有则count+1
-			for(String s : StringUtil.split(hobbyVO.getCartoon(),";")){
+			for(String s : StringUtil.split(hobbyVO.getArt(),";")){
 				if(artDao.hasArt(s) > 0){//如果有这个二级标签
 					artDao.inUpdate(s);
 				}else{//如果没有这个二级标签
@@ -511,6 +530,6 @@ public class UserService {
 		UserRelationshipWithBLOBs userRelationship = new UserRelationshipWithBLOBs();
 		userRelationship.setUserid(userId);
 		userRelationship.setFeaturevector(newFeature);
-		userRelationshipDao.updateFeature(userRelationship);
+		userRelationshipDao.update(userRelationship);
 	}
 }

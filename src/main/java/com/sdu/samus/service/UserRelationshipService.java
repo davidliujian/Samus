@@ -4,6 +4,7 @@ import com.sdu.samus.dao.UserRelationshipDao;
 import com.sdu.samus.enums.ResultCode;
 import com.sdu.samus.exception.ParameterException;
 import com.sdu.samus.exception.ServiceException;
+import com.sdu.samus.model.UserInfo;
 import com.sdu.samus.model.UserRelationshipWithBLOBs;
 import com.sdu.samus.util.StringUtil;
 import org.slf4j.Logger;
@@ -18,7 +19,8 @@ import java.util.ArrayList;
 public class UserRelationshipService {
 	@Autowired
 	private UserRelationshipDao userRelationshipDao;
-
+	@Autowired
+	private UserService userService;
 	private static final Logger logger = LoggerFactory.getLogger(UserRelationshipService.class);
 
 	/**
@@ -52,6 +54,7 @@ public class UserRelationshipService {
 		userRelationship.setUserid(schoolid5+xuehao);
 		userRelationship.setCity(city);
 		userRelationship.setHobbycount(hobbyCount);
+		userRelationship.setGrouplist("好友");
 
 		return userRelationshipDao.registerRelationship(userRelationship);
 	}
@@ -101,16 +104,77 @@ public class UserRelationshipService {
 			throw pe;
 		}
 
-		//获取喜欢人的featurevector
+		UserInfo user = userService.getUserInfo(userId);
+		UserInfo likeuser = userService.getUserInfo(contactId);
+
+		//获取喜欢人的featurevector,likeList
 		UserRelationshipWithBLOBs userRelationshipWithBLOBs1 = userRelationshipDao.findUserRelationship(contactId);
 		String featureVector = userRelationshipWithBLOBs1.getFeaturevector();
+		String likeList1 = userRelationshipWithBLOBs1.getLikelist();
+		String contact1 = userRelationshipWithBLOBs1.getContactlist();
 		logger.info("featureVector:"+featureVector);
-		//获取当前用户的hobbyCount
+		logger.info("likeList1:"+likeList1);
+		ArrayList<String> likeArray1 = StringUtil.split(likeList1,";");
+
+		//获取当前用户的hobbyCount,likeList
 		UserRelationshipWithBLOBs userRelationshipWithBLOBs = userRelationshipDao.findUserRelationship(userId);
 		String hobbyCount = userRelationshipWithBLOBs.getHobbycount();
+		String likeList = userRelationshipWithBLOBs.getLikelist();
+		String contact = userRelationshipWithBLOBs.getContactlist();
 		ArrayList<String> array = StringUtil.split(hobbyCount,";");
 
+		String like="";
+		if(!StringUtil.isEmpty(likeList)){
+			like = likeList+";"+contactId;
+		}else{
+			like = contactId;
+		}
+
 		logger.info("分割hobbyCount成功！！！");
+
+		//如果喜欢人也喜欢自己,更新双方的likeList和contactList
+		if(likeArray1.contains(userId)){
+			//删除喜欢人的likeList列表里的自己
+			likeArray1.remove(userId);
+			String like1 = "";
+			if(likeArray1.size()!=0){
+				StringBuffer sblike= new StringBuffer();
+				for(String s : likeArray1){
+					sblike.append(s).append(";");
+				}
+				sblike.deleteCharAt(sblike.lastIndexOf(";"));
+				like1 = sblike.toString();
+			}
+
+			String newContact1="";
+			if(StringUtil.isEmpty(contact1)){
+				newContact1 = userId+":"+user.getNickname()+":好友";
+			}else{
+				newContact1 = contact1+"\\10"+userId+":"+user.getNickname()+":好友";
+			}
+
+
+			//更新喜欢人的likeList和contactList
+			UserRelationshipWithBLOBs user1 = new UserRelationshipWithBLOBs();
+			user1.setUserid(contactId);
+			user1.setLikelist(like1);
+			user1.setContactlist(newContact1);
+			userRelationshipDao.update(user1);
+
+			//更新自己的contactList
+			UserRelationshipWithBLOBs user2 = new UserRelationshipWithBLOBs();
+			user2.setUserid(userId);
+			String newContact="";
+			if(StringUtil.isEmpty(contact)){
+				newContact = contactId+":"+likeuser.getNickname()+":好友";
+			}else{
+				newContact = contact+"\\10"+contactId+":"+likeuser.getNickname()+":好友";
+			}
+
+			user2.setContactlist(newContact);
+			userRelationshipDao.update(user2);
+			like = likeList;
+		}
 
 		StringBuffer sb = new StringBuffer();
 		for(int i = 0; i < array.size(); i++){
@@ -124,7 +188,8 @@ public class UserRelationshipService {
 
 		logger.info("构造新的hobbyCount成功！！！"+newHobbyCount );
 
-		int res = userRelationshipDao.updateLike(userId,newHobbyCount);
+		int res = userRelationshipDao.updateLike(userId,newHobbyCount,like);
+
 		if(res == 0){
 			logger.info("右滑喜欢更改数据库失败！");
 			throw new ServiceException(ResultCode.DB_EXCEPTION);

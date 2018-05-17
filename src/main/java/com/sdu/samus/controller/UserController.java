@@ -139,8 +139,12 @@ public class UserController {
 		UserRelationshipWithBLOBs userRelationshipWithBLOBs =userRelationshipService.getUserRelationship(user.getUserid());
 		String list = userRelationshipWithBLOBs.getGrouplist();
 		logger.info(list);
-		ArrayList<String> res = StringUtil.split(list,"\\10");
-		return ResultVoGenerator.success(res);
+		if(StringUtil.isEmpty(list)){
+			return ResultVoGenerator.success();
+		}else {
+			ArrayList<String> res = StringUtil.split(list, "\\10");
+			return ResultVoGenerator.success(res);
+		}
 	}
 
 	/**
@@ -154,16 +158,20 @@ public class UserController {
 		UserRelationshipWithBLOBs userRelationshipWithBLOBs =userRelationshipService.getUserRelationship(user.getUserid());
 		String list = userRelationshipWithBLOBs.getContactlist();
 		logger.info(list);
-		ArrayList<String> res = StringUtil.split(list,"\\10");
-		ArrayList<Contact> result = new ArrayList<>();
+		if(StringUtil.isEmpty(list)){
+			return ResultVoGenerator.success();
+		}else {
+			ArrayList<String> res = StringUtil.split(list, "\\10");
+			ArrayList<Contact> result = new ArrayList<>();
 
-		//修改返回的联系人以及其分组的格式
-		for(String s : res){
-			Contact con = new Contact(s.substring(0,s.indexOf(':')),s.substring(s.indexOf(':')+1));
-			result.add(con);
+			//修改返回的联系人以及其分组的格式
+			for (String s : res) {
+				Contact con = new Contact(s.substring(0, s.indexOf(':')), s.substring(s.indexOf(':')+1,s.lastIndexOf(':')),s.substring(s.lastIndexOf(':') + 1));
+				result.add(con);
+			}
+
+			return ResultVoGenerator.success(result);
 		}
-
-		return ResultVoGenerator.success(result);
 	}
 
 	/**
@@ -176,12 +184,13 @@ public class UserController {
 	public ResultVO getUser() throws DataAccessException,ParameterException{
 		logger.info("------------------获得个人信息--------------------------");
 		UserInfo user = (UserInfo)SessionUtil.getSession(Constants.USER);
+		UserInfo userInfo = userService.getUserInfo(user.getUserid());
+		UserGetVO userGetVO = UserGetVO.UserInfoToUserGetVO(userInfo);
 
-		user.setPassword(null);
 		String schoolName = schoolService.getSchoolById5(user.getSchoolid5()).getSchoolname();
-
-		user.setSchoolid5(schoolName);	//将传回前端的schoolid5编程schoolName
-		return ResultVoGenerator.success(user);
+		userGetVO.setSchoolName(schoolName);
+		logger.info("头像"+userGetVO.getAvatar());
+		return ResultVoGenerator.success(userGetVO);
 	}
 
 	/**
@@ -194,6 +203,7 @@ public class UserController {
 	public ResultVO updateUser(@RequestBody UserUpdateVO userInfo) throws DataAccessException,ParameterException{
 		logger.info("------------------更改个人信息--------------------------");
 		UserInfo user = (UserInfo)SessionUtil.getSession(Constants.USER);
+		logger.info("更改头像："+userInfo.getAvatar());
 		userService.updateUserInfo(userInfo,user.getUserid());
 		return ResultVoGenerator.success();
 	}
@@ -208,14 +218,20 @@ public class UserController {
 
 	//用于返回联系人列表时，每个人的name以及group
 	class Contact{
+		private String contactId;
 		private String name;
 		private String group;
 
 		public Contact(){}
 
-		public Contact(String name,String group){
+		public Contact(String contactId,String name,String group){
+			this.contactId = contactId;
 			this.name = name;
 			this.group = group;
+		}
+
+		public String getContactId() {
+			return contactId;
 		}
 
 		public String getName() {

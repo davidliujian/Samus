@@ -28,11 +28,11 @@ public class UserRelationshipDao {
 		return userRelationshipMapper.updateDislikeByPrimaryKey(userid);
 	}
 
-	public int updateLike(String userid , String hobbyCount){
-		return userRelationshipMapper.updateLikeByPrimaryKey(userid,hobbyCount);
+	public int updateLike(String userid , String hobbyCount,String like){
+		return userRelationshipMapper.updateLikeByPrimaryKey(userid,hobbyCount,like);
 	}
 
-	public int updateFeature(UserRelationshipWithBLOBs userRelationship){
+	public int update(UserRelationshipWithBLOBs userRelationship){
 		return userRelationshipMapper.updateByPrimaryKeySelective(userRelationship);
 	}
 }

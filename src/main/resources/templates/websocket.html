@@ -8,25 +8,27 @@
 <body>
 <button id="btn">开始</button>
 <script>
-    $("#btn").click(function () {
 
-var webSocket = new WebSocket("ws://127.0.0.1:8080//ws");
-webSocket.onopen = function(event){
-console.log("连接成功");
-console.log(event);
-};
-webSocket.onerror = function(event){
-console.log("连接失败");
-console.log(event);
-};
-webSocket.onclose = function(event){
-console.log("Socket连接断开");
-console.log(event);
-};
-webSocket.onmessage = function(event){
+    var webSocket = new WebSocket("ws://127.0.0.1:8080//ws");
+    webSocket.onopen = function(event){
+        console.log("连接成功");
+        console.log(event);
+    };
+    webSocket.onerror = function(event){
+        console.log("连接失败");
+        console.log(event);
+    };
+    webSocket.onclose = function(event){
+        console.log("Socket连接断开");
+        console.log(event);
+    };
+    webSocket.onmessage = function(event){
 //接受来自服务器的消息
 //...
-}
+        console.log("onmessage");
+    }
+    $("#btn").click(function () {
+
 
 var data = {};//新建data对象，并规定属性名与相应的值
 data['fromId'] = "10002201599177541";

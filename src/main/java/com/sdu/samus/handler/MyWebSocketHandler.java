@@ -25,6 +25,7 @@ public class MyWebSocketHandler implements WebSocketHandler {
 	//握手实现连接后
 	@Override
 	public void afterConnectionEstablished(WebSocketSession webSocketSession) throws Exception {
+		logger.info("-----------------afterConnectionEstablished--------------------");
 		String uid = (String) webSocketSession.getAttributes().get("uid");
 		if(userSocketSessionMap.get(uid) == null){
 			userSocketSessionMap.put(uid , webSocketSession);
@@ -34,6 +35,7 @@ public class MyWebSocketHandler implements WebSocketHandler {
 	//发送信息前的处理
 	@Override
 	public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> webSocketMessage) throws Exception {
+		logger.info("-----------------handleMessage--------------------");
 		if(webSocketMessage.getPayloadLength() == 0){
 			return;
 		}
@@ -76,10 +78,12 @@ public class MyWebSocketHandler implements WebSocketHandler {
 	}
 
 	//发送信息的实现
-	public void sendMessageToUser(int uid, TextMessage message) throws IOException {
+	public void sendMessageToUser(String uid, TextMessage message) throws IOException {
 		WebSocketSession session = userSocketSessionMap.get(uid);
 		if (session != null && session.isOpen()) {
 			session.sendMessage(message);
+		}else{
+			logger.info("用户不在线！！");
 		}
 	}
 }
