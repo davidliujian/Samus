@@ -218,23 +218,31 @@ public class UserService {
 				hobbyDao.hobbyUpdate("art");
 			}
 
-			//查看art表中是否有用户提交的兴趣，如果没有则新建，有则count+1
-			for(String s : StringUtil.split(hobbyVO.getArt(),";")){
-				if(artDao.hasArt(s) > 0){//如果有这个二级标签
-					artDao.inUpdate(s);
-				}else{//如果没有这个二级标签
-					Art art = new Art();
-					art.setArtname(s);
-					art.setArtcount(1);
-					artDao.insertArt(art);
+			String newFeature = "1"+featureVector.substring(1);
+			String newart = hobbyVO.getArt();
+
+			//
+			if("empty string".equals(hobbyVO.getArt())){
+				newFeature = "0"+featureVector.substring(1);
+				newart = "";
+			}else{	//查看art表中是否有用户提交的兴趣，如果没有则新建并设count为1，有则count+1
+				for(String s : StringUtil.split(hobbyVO.getArt(),";")){
+					if(artDao.hasArt(s) > 0){//如果有这个二级标签
+						artDao.inUpdate(s);
+					}else{//如果没有这个二级标签
+						Art art = new Art();
+						art.setArtname(s);
+						art.setArtcount(1);
+						artDao.insertArt(art);
+					}
 				}
 			}
 
+
 			//更新userInfo表
-			String newFeature = "1"+featureVector.substring(1);
 			UserInfo u = new UserInfo();
 			u.setUserid(user.getUserid());
-			u.setArt(hobbyVO.getArt());
+			u.setArt(newart);
 			u.setFeaturevector(newFeature);
 			int res = userDao.updateUser(u);
 			//更新userRelationship的featurevector
@@ -250,22 +258,30 @@ public class UserService {
 				hobbyDao.hobbyUpdate("cartoon");
 			}
 
-			for(String s : StringUtil.split(hobbyVO.getCartoon(),";")){
-				if(cartoonDao.hasCartoon(s) > 0){//如果有这个二级标签
-					cartoonDao.inUpdate(s);
-				}else{//如果没有这个二级标签
-					Cartoon cartoon = new Cartoon();
-					cartoon.setCartoonname(s);
-					cartoon.setCartooncount(1);
-					cartoonDao.insertCartoon(cartoon);
+			String newFeature = featureVector.substring(0,1)+"1"+featureVector.substring(2);
+			String newcartoon = hobbyVO.getCartoon();
+
+			//
+			if("empty string".equals(hobbyVO.getCartoon())){
+				newFeature = featureVector.substring(0,1)+"0"+featureVector.substring(2);
+				newcartoon = "";
+			}else {
+				for (String s : StringUtil.split(hobbyVO.getCartoon(), ";")) {
+					if (cartoonDao.hasCartoon(s) > 0) {//如果有这个二级标签
+						cartoonDao.inUpdate(s);
+					} else {//如果没有这个二级标签
+						Cartoon cartoon = new Cartoon();
+						cartoon.setCartoonname(s);
+						cartoon.setCartooncount(1);
+						cartoonDao.insertCartoon(cartoon);
+					}
 				}
 			}
 
 			//更新userInfo表
-			String newFeature = featureVector.substring(0,1)+"1"+featureVector.substring(2);
 			UserInfo u = new UserInfo();
 			u.setUserid(user.getUserid());
-			u.setCartoon(hobbyVO.getCartoon());
+			u.setCartoon(newcartoon);
 			u.setFeaturevector(newFeature);
 			int res = userDao.updateUser(u);
 			//更新userRelationship的featurevector
@@ -281,22 +297,30 @@ public class UserService {
 				hobbyDao.hobbyUpdate("food");
 			}
 
-			for(String s : StringUtil.split(hobbyVO.getFood(),";")){
-				if(foodDao.hasFood(s) > 0){//如果有这个二级标签
-					foodDao.inUpdate(s);
-				}else{//如果没有这个二级标签
-					Food food = new Food();
-					food.setFoodname(s);
-					food.setFoodcount(1);
-					foodDao.insertFood(food);
+			String newFeature = featureVector.substring(0,2)+"1"+featureVector.substring(3);
+			String newfood = hobbyVO.getFood();
+
+			//
+			if("empty string".equals(hobbyVO.getFood())){
+				newFeature = featureVector.substring(0,2)+"0"+featureVector.substring(3);
+				newfood = "";
+			}else {
+				for (String s : StringUtil.split(hobbyVO.getFood(), ";")) {
+					if (foodDao.hasFood(s) > 0) {//如果有这个二级标签
+						foodDao.inUpdate(s);
+					} else {//如果没有这个二级标签
+						Food food = new Food();
+						food.setFoodname(s);
+						food.setFoodcount(1);
+						foodDao.insertFood(food);
+					}
 				}
 			}
 
 			//更新userInfo表
-			String newFeature = featureVector.substring(0,2)+"1"+featureVector.substring(3);
 			UserInfo u = new UserInfo();
 			u.setUserid(user.getUserid());
-			u.setFood(hobbyVO.getFood());
+			u.setFood(newfood);
 			u.setFeaturevector(newFeature);
 			int res = userDao.updateUser(u);
 
@@ -314,22 +338,30 @@ public class UserService {
 				hobbyDao.hobbyUpdate("game");
 			}
 
-			for(String s : StringUtil.split(hobbyVO.getGame(),";")){
-				if(gameDao.hasGame(s) > 0){//如果有这个二级标签
-					gameDao.inUpdate(s);
-				}else{//如果没有这个二级标签
-					Game game = new Game();
-					game.setGamename(s);
-					game.setGamecount(1);
-					gameDao.insertGame(game);
+			String newFeature = featureVector.substring(0,3)+"1"+featureVector.substring(4);
+			String newgame = hobbyVO.getGame();
+
+			//
+			if("empty string".equals(hobbyVO.getGame())){
+				newFeature = featureVector.substring(0,3)+"0"+featureVector.substring(4);
+				newgame = "";
+			}else {
+				for (String s : StringUtil.split(hobbyVO.getGame(), ";")) {
+					if (gameDao.hasGame(s) > 0) {//如果有这个二级标签
+						gameDao.inUpdate(s);
+					} else {//如果没有这个二级标签
+						Game game = new Game();
+						game.setGamename(s);
+						game.setGamecount(1);
+						gameDao.insertGame(game);
+					}
 				}
 			}
 
 			//更新userInfo表
-			String newFeature = featureVector.substring(0,3)+"1"+featureVector.substring(4);
 			UserInfo u = new UserInfo();
 			u.setUserid(user.getUserid());
-			u.setGame(hobbyVO.getGame());
+			u.setGame(newgame);
 			u.setFeaturevector(newFeature);
 			int res = userDao.updateUser(u);
 			//更新userRelationship的featurevector
@@ -345,22 +377,30 @@ public class UserService {
 				hobbyDao.hobbyUpdate("idol");
 			}
 
-			for(String s : StringUtil.split(hobbyVO.getIdol(),";")){
-				if(idolDao.hasIdol(s) > 0){//如果有这个二级标签
-					idolDao.inUpdate(s);
-				}else{//如果没有这个二级标签
-					Idol idol = new Idol();
-					idol.setIdolname(s);
-					idol.setIdolcount(1);
-					idolDao.insertIdol(idol);
+			String newFeature = featureVector.substring(0,4)+"1"+featureVector.substring(5);
+			String newidol = hobbyVO.getIdol();
+
+			//
+			if("empty string".equals(hobbyVO.getIdol())){
+				newFeature =  featureVector.substring(0,4)+"0"+featureVector.substring(5);
+				newidol = "";
+			}else {
+				for (String s : StringUtil.split(hobbyVO.getIdol(), ";")) {
+					if (idolDao.hasIdol(s) > 0) {//如果有这个二级标签
+						idolDao.inUpdate(s);
+					} else {//如果没有这个二级标签
+						Idol idol = new Idol();
+						idol.setIdolname(s);
+						idol.setIdolcount(1);
+						idolDao.insertIdol(idol);
+					}
 				}
 			}
 
 			//更新userInfo表
-			String newFeature = featureVector.substring(0,4)+"1"+featureVector.substring(5);
 			UserInfo u = new UserInfo();
 			u.setUserid(user.getUserid());
-			u.setIdol(hobbyVO.getIdol());
+			u.setIdol(newidol);
 			u.setFeaturevector(newFeature);
 			int res = userDao.updateUser(u);
 			//更新userRelationship的featurevector
@@ -376,22 +416,30 @@ public class UserService {
 				hobbyDao.hobbyUpdate("movie");
 			}
 
-			for(String s : StringUtil.split(hobbyVO.getMovie(),";")){
-				if(movieDao.hasMovie(s) > 0){//如果有这个二级标签
-					movieDao.inUpdate(s);
-				}else{//如果没有这个二级标签
-					Movie movie = new Movie();
-					movie.setMoviename(s);
-					movie.setMoviecount(1);
-					movieDao.insertMovie(movie);
+			String newFeature = featureVector.substring(0,5)+"1"+featureVector.substring(6);
+			String newmovie = hobbyVO.getMovie();
+
+			//
+			if("empty string".equals(hobbyVO.getMovie())){
+				newFeature =  featureVector.substring(0,5)+"0"+featureVector.substring(6);
+				newmovie = "";
+			}else {
+				for (String s : StringUtil.split(hobbyVO.getMovie(), ";")) {
+					if (movieDao.hasMovie(s) > 0) {//如果有这个二级标签
+						movieDao.inUpdate(s);
+					} else {//如果没有这个二级标签
+						Movie movie = new Movie();
+						movie.setMoviename(s);
+						movie.setMoviecount(1);
+						movieDao.insertMovie(movie);
+					}
 				}
 			}
 
 			//更新userInfo表
-			String newFeature = featureVector.substring(0,5)+"1"+featureVector.substring(6);
 			UserInfo u = new UserInfo();
 			u.setUserid(user.getUserid());
-			u.setMovie(hobbyVO.getMovie());
+			u.setMovie(newmovie);
 			u.setFeaturevector(newFeature);
 			int res = userDao.updateUser(u);
 			//更新userRelationship的featurevector
@@ -407,22 +455,30 @@ public class UserService {
 				hobbyDao.hobbyUpdate("music");
 			}
 
-			for(String s : StringUtil.split(hobbyVO.getMusic(),";")){
-				if(musicDao.hasMusic(s) > 0){//如果有这个二级标签
-					musicDao.inUpdate(s);
-				}else{//如果没有这个二级标签
-					Music music = new Music();
-					music.setMusicname(s);
-					music.setMusiccount(1);
-					musicDao.insertMusic(music);
+			String newFeature = featureVector.substring(0,6)+"1"+featureVector.substring(7);
+			String newmusic = hobbyVO.getMusic();
+
+			//
+			if("empty string".equals(hobbyVO.getMusic())){
+				newFeature = featureVector.substring(0,6)+"0"+featureVector.substring(7);
+				newmusic = "";
+			}else {
+				for (String s : StringUtil.split(hobbyVO.getMusic(), ";")) {
+					if (musicDao.hasMusic(s) > 0) {//如果有这个二级标签
+						musicDao.inUpdate(s);
+					} else {//如果没有这个二级标签
+						Music music = new Music();
+						music.setMusicname(s);
+						music.setMusiccount(1);
+						musicDao.insertMusic(music);
+					}
 				}
 			}
 
 			//更新userInfo表
-			String newFeature = featureVector.substring(0,6)+"1"+featureVector.substring(7);
 			UserInfo u = new UserInfo();
 			u.setUserid(user.getUserid());
-			u.setMusic(hobbyVO.getMusic());
+			u.setMusic(newmusic);
 			u.setFeaturevector(newFeature);
 			int res = userDao.updateUser(u);
 			//更新userRelationship的featurevector
@@ -438,22 +494,30 @@ public class UserService {
 				hobbyDao.hobbyUpdate("reading");
 			}
 
-			for(String s : StringUtil.split(hobbyVO.getReading(),";")){
-				if(readingDao.hasReading(s) > 0){//如果有这个二级标签
-					readingDao.inUpdate(s);
-				}else{//如果没有这个二级标签
-					Reading reading = new Reading();
-					reading.setReadingname(s);
-					reading.setReadingcount(1);
-					readingDao.insertReading(reading);
+			String newFeature = featureVector.substring(0,7)+"1"+featureVector.substring(8);
+			String newreading = hobbyVO.getReading();
+
+			//
+			if("empty string".equals(hobbyVO.getReading())){
+				newFeature = featureVector.substring(0,7)+"0"+featureVector.substring(8);
+				newreading = "";
+			}else {
+				for (String s : StringUtil.split(hobbyVO.getReading(), ";")) {
+					if (readingDao.hasReading(s) > 0) {//如果有这个二级标签
+						readingDao.inUpdate(s);
+					} else {//如果没有这个二级标签
+						Reading reading = new Reading();
+						reading.setReadingname(s);
+						reading.setReadingcount(1);
+						readingDao.insertReading(reading);
+					}
 				}
 			}
 
 			//更新userInfo表
-			String newFeature = featureVector.substring(0,7)+"1"+featureVector.substring(8);
 			UserInfo u = new UserInfo();
 			u.setUserid(user.getUserid());
-			u.setReading(hobbyVO.getReading());
+			u.setReading(newreading);
 			u.setFeaturevector(newFeature);
 			int res = userDao.updateUser(u);
 			//更新userRelationship的featurevector
@@ -469,22 +533,30 @@ public class UserService {
 				hobbyDao.hobbyUpdate("sport");
 			}
 
-			for(String s : StringUtil.split(hobbyVO.getSport(),";")){
-				if(sportDao.hasSport(s) > 0){//如果有这个二级标签
-					sportDao.inUpdate(s);
-				}else{//如果没有这个二级标签
-					Sport sport = new Sport();
-					sport.setSportname(s);
-					sport.setSportcount(1);
-					sportDao.insertSport(sport);
+			String newFeature = featureVector.substring(0,8)+"1"+featureVector.substring(9);
+			String newsport = hobbyVO.getSport();
+
+			//
+			if("empty string".equals(hobbyVO.getSport())){
+				newFeature =featureVector.substring(0,8)+"0"+featureVector.substring(9);
+				newsport = "";
+			}else {
+				for (String s : StringUtil.split(hobbyVO.getSport(), ";")) {
+					if (sportDao.hasSport(s) > 0) {//如果有这个二级标签
+						sportDao.inUpdate(s);
+					} else {//如果没有这个二级标签
+						Sport sport = new Sport();
+						sport.setSportname(s);
+						sport.setSportcount(1);
+						sportDao.insertSport(sport);
+					}
 				}
 			}
 
 			//更新userInfo表
-			String newFeature = featureVector.substring(0,8)+"1"+featureVector.substring(9);
 			UserInfo u = new UserInfo();
 			u.setUserid(user.getUserid());
-			u.setSport(hobbyVO.getSport());
+			u.setSport(newsport);
 			u.setFeaturevector(newFeature);
 			int res = userDao.updateUser(u);
 			//更新userRelationship的featurevector
@@ -500,22 +572,30 @@ public class UserService {
 				hobbyDao.hobbyUpdate("travel");
 			}
 
-			for(String s : StringUtil.split(hobbyVO.getTravel(),";")){
-				if(travelDao.hasTravel(s) > 0){//如果有这个二级标签
-					travelDao.inUpdate(s);
-				}else{//如果没有这个二级标签
-					Travel travel = new Travel();
-					travel.setTravelname(s);
-					travel.setTravelcount(1);
-					travelDao.insertTravel(travel);
+			String newFeature = featureVector.substring(0,9)+"1";
+			String newtravel= hobbyVO.getTravel();
+
+			//
+			if("empty string".equals(hobbyVO.getTravel())){
+				newFeature = featureVector.substring(0,9)+"0";
+				newtravel = "";
+			}else {
+				for (String s : StringUtil.split(hobbyVO.getTravel(), ";")) {
+					if (travelDao.hasTravel(s) > 0) {//如果有这个二级标签
+						travelDao.inUpdate(s);
+					} else {//如果没有这个二级标签
+						Travel travel = new Travel();
+						travel.setTravelname(s);
+						travel.setTravelcount(1);
+						travelDao.insertTravel(travel);
+					}
 				}
 			}
 
 			//更新userInfo表
-			String newFeature = featureVector.substring(0,9)+"1";
 			UserInfo u = new UserInfo();
 			u.setUserid(user.getUserid());
-			u.setTravel(hobbyVO.getTravel());
+			u.setTravel(newtravel);
 			u.setFeaturevector(newFeature);
 			int res = userDao.updateUser(u);
 			//更新userRelationship的featurevector
