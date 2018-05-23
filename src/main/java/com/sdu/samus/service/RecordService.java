@@ -76,7 +76,7 @@ public class RecordService {
 
 			ArrayList<String> base64List = new ArrayList<String>();
 			for(String s: StringUtil.split(r.getPicture(),";")){
-				logger.info(Base64Util.ImageToBase64String(s));
+//				logger.info(Base64Util.ImageToBase64String(s));
 				base64List.add(Base64Util.ImageToBase64String(s));
 			}
 

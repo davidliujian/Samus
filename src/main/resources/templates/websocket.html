@@ -9,7 +9,7 @@
 <button id="btn">开始</button>
 <script>
 
-    var webSocket = new WebSocket("ws://127.0.0.1:8080//ws");
+    var webSocket = new WebSocket("ws://127.0.0.1:8080//websocket");
     webSocket.onopen = function(event){
         console.log("连接成功");
         console.log(event);

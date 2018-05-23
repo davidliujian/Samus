@@ -38,7 +38,9 @@ public enum ResultCode {
 	END_RECORD(1023,"NO more records"),
 	RECORD_EMPTY(1024,"Record is empty"),
 	LOG_INSERT_ERROR(1025,"Insert log failed"),
-	NOT_LOGIN(1026,"Have not login");
+	NOT_LOGIN(1026,"Have not login"),
+	NOT_STUDENT(1027,"You are not student!"),
+	URL_EMPTY(1028,"URL is empty.");
 
 	private Integer code;
 

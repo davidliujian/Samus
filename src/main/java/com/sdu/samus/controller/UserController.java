@@ -14,6 +14,7 @@ import com.sdu.samus.service.UserRelationshipService;
 import com.sdu.samus.service.UserService;
 import com.sdu.samus.util.ResultVoGenerator;
 import com.sdu.samus.util.SessionUtil;
+import com.sdu.samus.util.SimulateLoginUtil;
 import com.sdu.samus.util.StringUtil;
 import com.sdu.samus.vo.*;
 import org.slf4j.Logger;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -74,11 +76,17 @@ public class UserController {
 	}
 
 	@RequestMapping(value="/register",method=RequestMethod.POST)
-	public ResultVO register(@RequestBody UserRegisterVO user) throws ParameterException,ServiceException,DataAccessException{
+	public ResultVO register(@RequestBody UserRegisterVO user) throws ParameterException,ServiceException,DataAccessException,IOException {
 		logger.info("------------------注册--------------------------");
 		logger.info(user.getSchoolId5()+"  "+user.getXuehao()+"    "+user.getGender()+"    "+user.getPassword());
 		//根据学校名获取学校
 		School school = schoolService.getSchoolBySchoolId5(user);
+
+		//验证学生身份，模拟登陆教务系统
+		String isStu = SimulateLoginUtil.simulate(user.getXuehao(),user.getPassword(),school.getUrl());
+		if(!"success".equals(isStu.substring(isStu.indexOf("\"")+1,isStu.lastIndexOf("\"")))){
+			return ResultVoGenerator.error(ResultCode.NOT_STUDENT);
+		}
 
 		//开始决定前端传过来的是学校名，之后改成前端存储schoolId5,直接传schoolId5
 		String schoolid5 = user.getSchoolId5();
@@ -189,7 +197,7 @@ public class UserController {
 
 		String schoolName = schoolService.getSchoolById5(user.getSchoolid5()).getSchoolname();
 		userGetVO.setSchoolName(schoolName);
-		logger.info("头像"+userGetVO.getAvatar());
+//		logger.info("头像"+userGetVO.getAvatar());
 		return ResultVoGenerator.success(userGetVO);
 	}
 
@@ -203,7 +211,7 @@ public class UserController {
 	public ResultVO updateUser(@RequestBody UserUpdateVO userInfo) throws DataAccessException,ParameterException{
 		logger.info("------------------更改个人信息--------------------------");
 		UserInfo user = (UserInfo)SessionUtil.getSession(Constants.USER);
-		logger.info("更改头像："+userInfo.getAvatar());
+//		logger.info("更改头像："+userInfo.getAvatar());
 		userService.updateUserInfo(userInfo,user.getUserid());
 		return ResultVoGenerator.success();
 	}
@@ -211,6 +219,7 @@ public class UserController {
 	@RequestMapping(value = "/updateHobby",method = RequestMethod.POST)
 	public ResultVO updateHobby(@RequestBody HobbyVO hobbyVO) throws ParameterException,ServiceException{
 		logger.info("------------------更改个人兴趣标签--------------------------");
+		logger.info("提交的音乐为："+hobbyVO.getMusic());
 		UserInfo user = (UserInfo) SessionUtil.getSession(Constants.USER);
 		userService.updateHobby(hobbyVO,user.getUserid());
 		return ResultVoGenerator.success();

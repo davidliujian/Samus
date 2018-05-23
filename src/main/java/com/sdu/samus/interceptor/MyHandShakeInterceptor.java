@@ -29,7 +29,6 @@ public class MyHandShakeInterceptor extends  HttpSessionHandshakeInterceptor {
 			HttpSession session = servletRequest.getServletRequest().getSession(false);
 
 			logger.info("MyHandShakeInterceptor --- [session.getId()]     :"+session.getId());
-
 			// 标记用户
 			UserInfo user =(UserInfo) session.getAttribute(Constants.USER);//(UserInfo)  SessionUtil.getSession(Constants.USER); //
 

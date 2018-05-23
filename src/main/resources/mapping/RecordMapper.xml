@@ -64,7 +64,7 @@
     <include refid="Blob_Column_List" />
     from record
     where userId = #{userid,jdbcType=VARCHAR}
-    ORDER BY createTime
+    ORDER BY createTime DESC
     LIMIT #{offset} , #{pageSize}
   </select>
 
